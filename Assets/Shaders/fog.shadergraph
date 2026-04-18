@@ -47,6 +47,9 @@
         },
         {
             "m_Id": "d42a906df1444fd58fa86e493d5b5d0c"
+        },
+        {
+            "m_Id": "08ebc4b373cc4876b8c50bb42a5ecc7d"
         }
     ],
     "m_GroupDatas": [
@@ -187,6 +190,9 @@
             },
             {
                 "m_Id": "30a2c1adcc0b4e448b55a53d6cd11158"
+            },
+            {
+                "m_Id": "08ebc4b373cc4876b8c50bb42a5ecc7d"
             }
         ]
     },
@@ -209,6 +215,40 @@
             "m_Id": "c51a205dfcdf40c3a2c52f545d991de2"
         }
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "08ebc4b373cc4876b8c50bb42a5ecc7d",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.FullscreenEyeDepth",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "9d486da451c54ba9b853a3c852cddb87"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.FullscreenEyeDepth"
 }
 
 {
@@ -483,8 +523,8 @@
     "m_ObjectId": "4d76697432aa4b0781435c39ed65f960",
     "m_Title": "Density",
     "m_Position": {
-        "x": -1745.143310546875,
-        "y": -317.142822265625
+        "x": -1745.1429443359375,
+        "y": -317.14288330078127
     }
 }
 
@@ -601,7 +641,7 @@
     "m_DepthWrite": false,
     "m_depthWriteMode": 0,
     "m_AllowMaterialOverride": false,
-    "m_DepthTestMode": 0
+    "m_DepthTestMode": 8
 }
 
 {
@@ -720,6 +760,21 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "9d486da451c54ba9b853a3c852cddb87",
+    "m_Id": 0,
+    "m_DisplayName": "Eye Depth",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "FullscreenEyeDepth",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -1222,7 +1277,7 @@
     },
     "m_Name": "Scene Depth",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1719.4283447265625,

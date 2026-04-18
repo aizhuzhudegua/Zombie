@@ -1,99 +1,152 @@
-using UnityEngine;
-using System.Collections;
+ï»¿using UnityEngine;
 using Sirenix.OdinInspector;
 
 public class GPUAnimController : MonoBehaviour
 {
-    [Header("°ó¶¨Êı¾İ")]
-    public Texture2D boneTex;
+    [Header("åŠ¨ç”»é…ç½®")]
     public AnimationConfig animConfig;
-    public float frameRate = 30;
-    public float defaultFadeTime = 0.2f;
 
-    private Material mat;
-    private string currentAnimName;
-    private Coroutine transitionCoroutine;
+    [Header("è¿‡æ¸¡è®¾ç½®")]
+    public float transitionDuration = 0.2f;
+
+    [Header("çƒ˜ç„™å¸§ç‡")]
+    public float frameRate = 30f;
+
+    [Header("è¿è¡ŒçŠ¶æ€")]
+    [ReadOnly] public bool isPaused = false;
+
+    private MeshRenderer _renderer;
+    private MaterialPropertyBlock _mpb;
+    private AnimationClipInfo _currentClip;
+
+    private float _animProgress;    // å½“å‰åŠ¨ç”»æ’­æ”¾è¿›åº¦
+    private float _frameTimer;
+    private float _frameInterval => 1f / frameRate;
+
+    // è¿‡æ¸¡çŠ¶æ€
+    private bool _isTransitioning;
+    private float _transitionTimer;
+    private float _frozenProgress;          // è¿‡æ¸¡æœŸé—´å†»ç»“çš„å½“å‰åŠ¨ç”»è¿›åº¦
+    private AnimationClipInfo _targetClip;  // è¿‡æ¸¡ç›®æ ‡åŠ¨ç”»
 
     void Start()
     {
-        mat = GetComponent<MeshRenderer>().material;
-        mat.SetTexture("_BoneTex", boneTex);
-        mat.SetFloat("_FrameRate", frameRate);
+        _renderer = GetComponent<MeshRenderer>();
+        _mpb = new MaterialPropertyBlock();
+        _animProgress = 0;
+        PlayAnimation("Idel");
+    }
 
-        // Ä¬ÈÏ²¥·ÅµÚÒ»¸ö¶¯»­
-        if (animConfig.clips.Count > 0)
+    void Update()
+    {
+        if (!isPaused && _currentClip != null)
         {
-            foreach (var key in animConfig.clips.Keys)
+            _frameTimer += Time.deltaTime;
+            if (_frameTimer >= _frameInterval)
             {
-                PlayAnimation(key);
-                break;
+                _frameTimer = 0;
+
+                if (_isTransitioning)
+                {
+                    // è¿‡æ¸¡æœŸé—´ï¼šè¿›åº¦å†»ç»“ï¼Œåªæ¨è¿› _Transition
+                    _transitionTimer += _frameInterval;
+                    float t = Mathf.Clamp01(_transitionTimer / transitionDuration);
+                    _mpb.SetFloat("_Transition", t);
+                    UpdateAnimData(_frozenProgress);
+
+                    if (t >= 1f)
+                    {
+                        // è¿‡æ¸¡å®Œæˆï¼Œç»§æ‰¿å†»ç»“è¿›åº¦ï¼ˆä¿æŒä¸åŸåç¨‹ä¸€è‡´ï¼‰
+                        _currentClip = _targetClip;
+                        _animProgress = 0;
+                        _isTransitioning = false;
+
+                        _mpb.Clear();
+                        _mpb.SetFloat("_CurrAnimStartFrame", _targetClip.start);
+                        _mpb.SetFloat("_CurrAnimEndFrame",   _targetClip.end);
+                        _mpb.SetInt("_isTransition", 0);
+                        UpdateAnimData();
+
+                        _targetClip = null;
+                    }
+                }
+                else
+                {
+                    // æ­£å¸¸æ’­æ”¾
+                    float totalFrames = _currentClip.end - _currentClip.start;
+                    float frameDuration = 1f / frameRate;
+                    _animProgress += frameDuration / (totalFrames / frameRate);
+
+                    if (_currentClip.isLoop)
+                        _animProgress %= 1f;
+                    else
+                        _animProgress = Mathf.Min(_animProgress, 1f);
+
+                    UpdateAnimData();
+                }
             }
         }
     }
 
+    #region å¤–éƒ¨æ¥å£
     [Button]
-    public void PlayAnimation(string targetAnimName, float fadeTime = -1)
+    public void PlayAnimation(string animationName)
     {
-        if (!animConfig.clips.TryGetValue(targetAnimName, out AnimationClipInfo targetClip))
-        {
-            Debug.LogWarning($"¶¯»­ {targetAnimName} ²»´æÔÚ£¡");
-            return;
-        }
+        if (!CheckAnimationValid(animationName)) return;
+        _isTransitioning = false;
+        _targetClip = null;
 
-        // Í¬¶¯»­£ºÎŞ¹ı¶É
-        if (currentAnimName == targetAnimName)
-        {
-            SetAnimationFrame(targetClip);
-            mat.SetFloat("_Transition", 0);
-            return;
-        }
+        _currentClip = animConfig.clips[animationName];
+        _animProgress = 0; // é‡ç½®è¿›åº¦
 
-        // ²»Í¬¶¯»­£º¹ı¶É
-        float fade = fadeTime < 0 ? defaultFadeTime : fadeTime;
-        StartCrossFade(targetClip, targetAnimName, fade);
+        _mpb.Clear();
+        _mpb.SetFloat("_CurrAnimStartFrame", _currentClip.start);
+        _mpb.SetFloat("_CurrAnimEndFrame",   _currentClip.end);
+        _mpb.SetInt("_isTransition", 0);
+        _mpb.SetFloat("_Transition", 0);
+        UpdateAnimData();
     }
 
-    // ÉèÖÃµ±Ç°¶¯»­µÄ ÆğÊ¼+½áÊøÖ¡
-    private void SetAnimationFrame(AnimationClipInfo clip)
+    [Button]
+    public void PlayAnimationWithTransition(string animationName)
     {
-        float start = clip.start;
-        float end = clip.end; // ½áÊøÖ¡ÊøÖ¡
+        if (!CheckAnimationValid(animationName)) return;
+        if (_currentClip == null) { PlayAnimation(animationName); return; }
 
-        mat.SetFloat("_CurrAnimStartFrame", start);
-        mat.SetFloat("_CurrAnimEndFrame", end);
-        mat.SetFloat("_TargetAnimStartFrame", start);
-        mat.SetFloat("_TargetAnimEndFrame", end);
+        _targetClip = animConfig.clips[animationName];
+        _frozenProgress = _animProgress; // å†»ç»“å½“å‰è¿›åº¦
+        _transitionTimer = 0;
+        _isTransitioning = true;
+
+        _mpb.Clear();
+        _mpb.SetFloat("_CurrAnimStartFrame",   _currentClip.start);
+        _mpb.SetFloat("_CurrAnimEndFrame",     _currentClip.end);
+        _mpb.SetFloat("_TargetAnimStartFrame", _targetClip.start);
+        _mpb.SetFloat("_TargetAnimEndFrame",   _targetClip.end);
+        _mpb.SetInt("_isTransition", 1);
+        _mpb.SetFloat("_Transition", 0);
+        UpdateAnimData(_frozenProgress);
     }
 
-    private void StartCrossFade(AnimationClipInfo targetClip, string targetAnimName, float fadeTime)
+    [Button] public void PauseAnimation()  => isPaused = true;
+    [Button] public void ResumeAnimation() => isPaused = false;
+    [Button] public void ResetAnimation()  => _animProgress = 0;
+    #endregion
+
+    #region æ ¸å¿ƒé€»è¾‘
+    // æ›´æ–°æ•°æ®åˆ°Shader
+    private void UpdateAnimData(float overrideProgress = -1)
     {
-        if (transitionCoroutine != null)
-            StopCoroutine(transitionCoroutine);
-
-        // ÉèÖÃÄ¿±ê¶¯»­ÆğÖ¹Ö¡
-        float targetStart = targetClip.start;
-        float targetEnd = targetClip.end;
-
-        mat.SetFloat("_TargetAnimStartFrame", targetStart);
-        mat.SetFloat("_TargetAnimEndFrame", targetEnd);
-
-        transitionCoroutine = StartCoroutine(TransitionCoroutine(fadeTime, targetAnimName));
+        float progress = overrideProgress < 0 ? _animProgress : overrideProgress;
+        _mpb.SetFloat("_AnimProgress", progress);
+        _renderer.SetPropertyBlock(_mpb);
     }
 
-    private IEnumerator TransitionCoroutine(float fadeTime, string newAnimName)
+    private bool CheckAnimationValid(string animationName)
     {
-        float t = 0;
-        while (t < fadeTime)
-        {
-            t += Time.deltaTime;
-            mat.SetFloat("_Transition", t / fadeTime);
-            yield return null;
-        }
-
-        // ¹ı¶ÉÍê³É£ºÎŞ·ìÇĞ»»
-        currentAnimName = newAnimName;
-        mat.SetFloat("_CurrAnimStartFrame", mat.GetFloat("_TargetAnimStartFrame"));
-        mat.SetFloat("_CurrAnimEndFrame", mat.GetFloat("_TargetAnimEndFrame"));
-        mat.SetFloat("_Transition", 0);
+        if (animConfig == null) { Debug.LogError("æœªç»‘å®šAnimationConfig", gameObject); return false; }
+        if (!animConfig.clips.ContainsKey(animationName)) { Debug.LogError($"æ— åŠ¨ç”»ï¼š{animationName}", gameObject); return false; }
+        return true;
     }
+    #endregion
 }

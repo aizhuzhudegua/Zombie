@@ -86,7 +86,7 @@ public class GPUSkinningTransitionWindow : OdinEditorWindow
             animationConfig.clips.Add(clip.name, new AnimationClipInfo()
             {
                 start = startY,
-                end = currentY,
+                end = currentY-1,
                 isLoop = clip.isLooping
             });
             graph.Destroy();

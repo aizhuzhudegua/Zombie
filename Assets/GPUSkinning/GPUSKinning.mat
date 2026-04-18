@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -31,12 +32,36 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BoneMatrices:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BoneTex:
         m_Texture: {fileID: 2800000, guid: 0e5a220fa9fac6a4b91dcddf9a00b09d, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -47,8 +72,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: d6466ed586a4810489106694c51172da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -65,32 +106,66 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
     - _AnimLength: 100
     - _AnimationFrameRate: 30
     - _AnimationPlayCount: 10000
     - _AnimationPlayTime: 0
     - _AnimationSpeed: 1
-    - _CurrAnimEndFrame: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _CurrAnimEndFrame: 121
     - _CurrAnimStartFrame: 0
+    - _CurrAnimTime: 2.85
+    - _CurrFixedFrame: -1
     - _CurrentAnimationLength: 4.3
     - _CurrentAnimationStartIndex: 0
     - _CurrentAnimationStartTime: 0
     - _CurrentFrame: 1
     - _CurrentIndex: 0
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 1
     - _Float: 0
-    - _FrameRate: 10
-    - _Glossiness: 0.5
+    - _FrameRate: 30
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _IsCrossFade: 0
     - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _Offset: 0
+    - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _ReceiveShadows: 1
     - _Smoothness: 0.2
+    - _SmoothnessTextureChannel: 0
     - _Space: 0.01
-    - _TargetAnimEndFrame: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _TargetAnimEndFrame: 200
     - _TargetAnimLength: 100
-    - _TargetAnimStartFrame: 0
+    - _TargetAnimStartFrame: 122
     - _Transition: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    - _isTransition: 0
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7531222598938408469
 MonoBehaviour:

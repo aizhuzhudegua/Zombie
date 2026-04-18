@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 76578592180921007}
   serializedVersion: 2
   m_LocalRotation: {x: 0.03750936, y: -0.2050064, z: 0.0023008713, w: 0.97803897}
-  m_LocalPosition: {x: 0.001675896, y: 0.95074856, z: -0.0020308495}
+  m_LocalPosition: {x: 0.001675896, y: 0.95074856, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1274,9 +1274,9 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1974,6 +1974,7 @@ GameObject:
   - component: {fileID: 9037077236568151523}
   - component: {fileID: 6407305339841454876}
   - component: {fileID: 8096946125424768191}
+  - component: {fileID: 2138210659702971003}
   m_Layer: 0
   m_Name: Jill_HiRes_Limbs_Geo
   m_TagString: Untagged
@@ -1990,8 +1991,8 @@ Transform:
   m_GameObject: {fileID: 2600881540716471264}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071069, y: -0, z: -0.0000000018626454, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4885526007896525877}
@@ -2011,7 +2012,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 0
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -2046,6 +2047,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2600881540716471264}
   m_Mesh: {fileID: 6082387707026353823, guid: 58da90fa57c1d9945be22bdcb7fce931, type: 3}
+--- !u!114 &2138210659702971003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600881540716471264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd436fa41e5eafc4386e6a62eaefdb95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animConfig: {fileID: 11400000, guid: 5b3adbbe0a57f1741abb62b50a284d81, type: 2}
+  transitionDuration: 0.3
+  frameRate: 30
+  isPaused: 0
 --- !u!1 &2619569640887136236
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,13 +34,13 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 
     - Name: $k
       Entry: 1
-      Data: Walk
+      Data: Idel
     - Name: $v
       Entry: 7
       Data: 2|AnimationClipInfo, Assembly-CSharp
@@ -49,7 +49,31 @@ MonoBehaviour:
       Data: 0
     - Name: end
       Entry: 4
-      Data: 122
+      Data: 128
+    - Name: isLoop
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: Walk
+    - Name: $v
+      Entry: 7
+      Data: 3|AnimationClipInfo, Assembly-CSharp
+    - Name: start
+      Entry: 4
+      Data: 129
+    - Name: end
+      Entry: 4
+      Data: 250
     - Name: isLoop
       Entry: 5
       Data: true
@@ -67,13 +91,13 @@ MonoBehaviour:
       Data: Attack
     - Name: $v
       Entry: 7
-      Data: 3|AnimationClipInfo, Assembly-CSharp
+      Data: 4|AnimationClipInfo, Assembly-CSharp
     - Name: start
       Entry: 4
-      Data: 122
+      Data: 251
     - Name: end
       Entry: 4
-      Data: 201
+      Data: 329
     - Name: isLoop
       Entry: 5
       Data: false

@@ -350,9 +350,9 @@ Material:
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _SSSIntensity: 0.5
+    - _SSSIntensity: 1
     - _SSSPower: 10
-    - _ScatterIntensity: 1
+    - _ScatterIntensity: 0.5
     - _Smoothness: 0.5
     - _SmoothnessControl: 0
     - _SmoothnessRemapMax: 0.0067299604
