@@ -6,7 +6,7 @@ public class ZombieManager : MonoBehaviour
 {
     const int MaxNum = 1000;
 
-       public static ZombieManager Instance;
+    public static ZombieManager Instance;
     public GameObject prefab_Zombie;
     public List<ZombieController> zombies;
 
@@ -19,7 +19,6 @@ public class ZombieManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(CheckZombie());
-        FlowFieldManager.Instance.SetTarget(target.position);
     }
 
     

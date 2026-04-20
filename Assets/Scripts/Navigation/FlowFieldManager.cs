@@ -175,36 +175,36 @@ public class FlowFieldManager : MonoBehaviour
         return DataManager.Instance.IsWalkable(worldPos);
     }
 
-// #if UNITY_EDITOR
-//     void OnDrawGizmos()
-//     {
-//         if (flowField == null) return;
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        if (flowField == null) return;
 
-//         for (int x = 0; x < MaxCellCountX; x++)
-//         {
-//             for (int z = 0; z < MaxCellCountZ; z++)
-//             {
-//                 Vector3 center = CellToWorld(new Vector2Int(x, z));
+        for (int x = 0; x < MaxCellCountX; x++)
+        {
+            for (int z = 0; z < MaxCellCountZ; z++)
+            {
+                Vector3 center = CellToWorld(new Vector2Int(x, z));
 
-//                 if (!IsWalkable(new Vector2Int(x, z)))
-//                 {
-//                     Gizmos.color = Color.gray;
-//                     Gizmos.DrawWireCube(center, Vector3.one * cellSize * 0.9f);
-//                     continue;
-//                 }
+                if (!IsWalkable(new Vector2Int(x, z)))
+                {
+                    Gizmos.color = Color.gray;
+                    Gizmos.DrawWireCube(center, Vector3.one * cellSize * 0.9f);
+                    continue;
+                }
 
-//                 Vector2Int dir = flowField[x, z];
-//                 if (dir != Vector2Int.zero)
-//                 {
-//                     Gizmos.color = Color.blue;
-//                     Vector3 dir3D = new Vector3(dir.x, 0, dir.y).normalized;
-//                     Gizmos.DrawRay(center, dir3D * cellSize * 0.4f);
-//                 }
-//             }
-//         }
+                Vector2Int dir = flowField[x, z];
+                if (dir != Vector2Int.zero)
+                {
+                    Gizmos.color = Color.blue;
+                    Vector3 dir3D = new Vector3(dir.x, 0, dir.y).normalized;
+                    Gizmos.DrawRay(center, dir3D * cellSize * 0.4f);
+                }
+            }
+        }
 
-//         Gizmos.color = Color.yellow;
-//         Gizmos.DrawWireSphere(CellToWorld(targetCell), cellSize * 0.5f);
-//     }
-// #endif
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(CellToWorld(targetCell), cellSize * 0.5f);
+    }
+#endif
 }

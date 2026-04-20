@@ -34,7 +34,7 @@ public class GPUAnimController : MonoBehaviour
         _renderer = GetComponent<MeshRenderer>();
         _mpb = new MaterialPropertyBlock();
         _animProgress = 0;
-        PlayAnimation("Idel");
+        PlayAnimation("Walk");
     }
 
     void Update()

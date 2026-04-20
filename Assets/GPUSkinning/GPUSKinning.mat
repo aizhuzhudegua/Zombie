@@ -128,7 +128,7 @@ Material:
     - _CurrentAnimationStartTime: 0
     - _CurrentFrame: 1
     - _CurrentIndex: 0
-    - _Cutoff: 0.5
+    - _Cutoff: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -147,7 +147,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.2
+    - _Smoothness: 0.224
     - _SmoothnessTextureChannel: 0
     - _Space: 0.01
     - _SpecularHighlights: 1

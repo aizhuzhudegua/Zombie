@@ -25,7 +25,7 @@ public class DataManager : MonoBehaviour
         Instance = this;
         UnitCells = new LinkedList<RaycastUnit>[MaxCellCountX, MaxCellCountZ];
         UsedCellDict = new HashSet<Vector2Int>(100);
-        obstacleCells = new HashSet<Vector2Int>();
+        obstacleCells = new HashSet<Vector2Int>(100);
     }
     
     public Vector2Int WorldToCell(Vector3 worldPos)
@@ -37,25 +37,28 @@ public class DataManager : MonoBehaviour
 
     public void AddUnitToCell(Vector3Int cellIndex, RaycastUnit unit)
     {
-        Vector2Int key = WorldToCell(new Vector3(cellIndex.x, 0, cellIndex.z));
+        int x = cellIndex.x;
+        int z = cellIndex.z;
+        if (x < 0 || x >= MaxCellCountX || z < 0 || z >= MaxCellCountZ) return;
 
+        var key = new Vector2Int(x, z);
         if (!UsedCellDict.Contains(key))
         {
-            UnitCells[key.x, key.y] = new LinkedList<RaycastUnit>();
+            UnitCells[x, z] = new LinkedList<RaycastUnit>();
             UsedCellDict.Add(key);
         }
-        
-        UnitCells[key.x, key.y].AddLast(unit);
+        UnitCells[x, z].AddLast(unit);
     }
 
     public void RemoveUnitFromCell(Vector3Int cellIndex, RaycastUnit unit)
     {
-        Vector2Int key = WorldToCell(new Vector3(cellIndex.x, 0, cellIndex.z));
+        int x = cellIndex.x;
+        int z = cellIndex.z;
+        if (x < 0 || x >= MaxCellCountX || z < 0 || z >= MaxCellCountZ) return;
 
+        var key = new Vector2Int(x, z);
         if (UsedCellDict.Contains(key))
-        {
-            UnitCells[key.x, key.y].Remove(unit);
-        }
+            UnitCells[x, z].Remove(unit);
     }
 
     public void SetObstacle(Vector2Int cell, bool isObstacle)
@@ -108,32 +111,5 @@ public class DataManager : MonoBehaviour
         return true;
     }
 
-#if UNITY_EDITOR
-    //private void OnDrawGizmos()
-    //{
-    //    float halfCell = cellSize * 0.5f;
-        
-    //    for (int x = 0; x < MaxCellCountX; x++)
-    //    {
-    //        for (int z = 0; z < MaxCellCountZ; z++)
-    //        {
-    //            Vector2Int cell = new Vector2Int(x, z);
-    //            Vector3 center = new Vector3(x * cellSize + halfCell, 0, z * cellSize + halfCell);
 
-    //            if (obstacleCells.Contains(cell))
-    //            {
-    //                Gizmos.color = Color.gray;
-    //                Gizmos.DrawWireCube(center, Vector3.one * cellSize * 0.9f);
-    //            }
-    //            else if (UsedCellDict.Contains(cell) && 
-    //               UnitCells[x, z] != null && 
-    //               UnitCells[x, z].Count > 0)
-    //            {
-    //                Gizmos.color = Color.red;
-    //                Gizmos.DrawWireCube(center, Vector3.one * cellSize * 0.9f);
-    //            }
-    //        }
-    //    }
-    //}
-#endif
 }
