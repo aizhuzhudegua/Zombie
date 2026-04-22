@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class GPUAnimController : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class GPUAnimController : MonoBehaviour
     private MeshRenderer _renderer;
     private MaterialPropertyBlock _mpb;
     private AnimationClipInfo _currentClip;
+    private string _currentAnimName;
+    private string _targetAnimName;
 
     private float _animProgress;    // 当前动画播放进度
     private float _frameTimer;
@@ -29,12 +32,19 @@ public class GPUAnimController : MonoBehaviour
     private float _frozenProgress;          // 过渡期间冻结的当前动画进度
     private AnimationClipInfo _targetClip;  // 过渡目标动画
 
-    void Start()
+    public event Action<string> OnAnimationEnd;
+
+    private void Awake()
     {
-        _renderer = GetComponent<MeshRenderer>();
         _mpb = new MaterialPropertyBlock();
         _animProgress = 0;
-        PlayAnimation("Walk");
+        _renderer = GetComponent<MeshRenderer>();
+    }
+
+    void Start()
+    {
+        
+     
     }
 
     void Update()
@@ -56,6 +66,7 @@ public class GPUAnimController : MonoBehaviour
 
                     if (t >= 1f)
                     {
+                        _currentAnimName = _targetAnimName;
                         // 过渡完成，继承冻结进度（保持与原协程一致）
                         _currentClip = _targetClip;
                         _animProgress = 0;
@@ -80,7 +91,12 @@ public class GPUAnimController : MonoBehaviour
                     if (_currentClip.isLoop)
                         _animProgress %= 1f;
                     else
+                    {
+                        if(Mathf.Abs(1 - _animProgress) < 0.01f)
+                            OnAnimationEnd?.Invoke(_currentAnimName); // 动画结束事件
                         _animProgress = Mathf.Min(_animProgress, 1f);
+                    }
+                        
 
                     UpdateAnimData();
                 }
@@ -93,6 +109,7 @@ public class GPUAnimController : MonoBehaviour
     public void PlayAnimation(string animationName)
     {
         if (!CheckAnimationValid(animationName)) return;
+        _currentAnimName = animationName;
         _isTransitioning = false;
         _targetClip = null;
 
@@ -112,7 +129,7 @@ public class GPUAnimController : MonoBehaviour
     {
         if (!CheckAnimationValid(animationName)) return;
         if (_currentClip == null) { PlayAnimation(animationName); return; }
-
+        _targetAnimName = animationName;
         _targetClip = animConfig.clips[animationName];
         _frozenProgress = _animProgress; // 冻结当前进度
         _transitionTimer = 0;

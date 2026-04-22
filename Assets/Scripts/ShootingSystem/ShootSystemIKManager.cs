@@ -113,6 +113,8 @@ public class ShootSystemIKManager : MonoBehaviour
 
     public ShootSystemState curState = ShootSystemState.Idle;
 
+    public bool Locked = false;
+
     void Start()
     {
         leftHandIK.SetOwner(this);
@@ -120,8 +122,14 @@ public class ShootSystemIKManager : MonoBehaviour
         AimIK.SetOwner(this);
     }
 
-    public void Aim()
+    public void Aim(Vector3 LookDir)
     {
+        Vector3 aimDir = new Vector3(LookDir.x, 0 , LookDir.z).normalized;
+        if (Vector3.Dot(aimDir, transform.forward) < 0)
+        {
+            // 防止超过180度ik旋转出现问题
+            return;
+        }
         curState = ShootSystemState.Aim;
 
     }
@@ -150,6 +158,7 @@ public class ShootSystemIKManager : MonoBehaviour
     
     private void Update()
     {
+        if (Locked) return;
         leftHandIK.Update();
         BodyIK.Update();
         AimIK.Update();

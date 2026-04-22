@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class ZombieAttackState : IState<ZombieController>
+public class ZombieAttackState : IState<ZombieController> ,IGPUAnimationEndEventHandler
 {
+    private const string clipName = "Attack";
     public ZombieAttackState(StateMachine<ZombieController> stateMachine) : base(stateMachine) { }
 
     public override void Enter()
     {
-        if (Owner.navigation != null)
-            Owner.navigation.enabled = false;
-       
+        Owner.GpuAnimator.PlayAnimationWithTransition(clipName);
+        Owner.GetComponent<AgentNavigation>().enabled = false;
     }
 
     public override void Update()
@@ -18,5 +18,15 @@ public class ZombieAttackState : IState<ZombieController>
 
     public override void Exit()
     {
+       
+    }
+
+
+    void IGPUAnimationEndEventHandler.OnAnimationEnd(string name)
+    {
+        if (name == clipName)
+        {
+            Owner.stateMachine.ChangeState<ZombieRunState>();
+        }
     }
 }

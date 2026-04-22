@@ -24,24 +24,31 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hair
-  m_Shader: {fileID: -6465566751694194690, guid: 91ab4723201595244bee414b4b973690,
+  m_Shader: {fileID: -6465566751694194690, guid: 0f9dd5ce8a54c9c41a27973c908d9501,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  m_InvalidKeywords:
+  - _USEHASHING_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 1
-  m_CustomRenderQueue: -1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2450
   stringTagMap:
     MotionVector: User
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AnisoDir:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AtocMap:
         m_Texture: {fileID: 2800000, guid: 0c097f1874e7093478ea1b3371fbf085, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -52,10 +59,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: cba2734d6348ad744a30538970071f1b, type: 3}
-        m_Scale: {x: 1.14, y: 1}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5fb37b54b473df445a202c09d34ec85d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -70,6 +77,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Diffuse:
+        m_Texture: {fileID: 2800000, guid: cba2734d6348ad744a30538970071f1b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -78,12 +89,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: cba2734d6348ad744a30538970071f1b, type: 3}
         m_Scale: {x: 1.14, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 0c097f1874e7093478ea1b3371fbf085, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MaskMap:
         m_Texture: {fileID: 2800000, guid: 0c097f1874e7093478ea1b3371fbf085, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 5fb37b54b473df445a202c09d34ec85d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -110,8 +129,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Specular:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecularMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TanNoise:
+        m_Texture: {fileID: 2800000, guid: 5d72564b24d5e3844954576fecfe3a19, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -130,7 +157,7 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AlphaBlend: 1
-    - _AlphaClip: 0.01
+    - _AlphaClip: 1
     - _AlphaClipThreshold: 0
     - _AlphaClipThresholdDepthPostpass: 0.5
     - _AlphaClipThresholdDepthPrepass: 1
@@ -140,18 +167,23 @@ Material:
     - _AlphaSrcBlend: 1
     - _AlphaTest: 1
     - _AlphaThresholdShadow: 0.5
-    - _AlphaToMask: 0
+    - _AlphaToMask: 1
+    - _AnisoOffset: -0.279
+    - _AnisoRot: 0.129
+    - _AnisotropicFrequency: 1.08
+    - _AnisotropicRoughness: 0.218
     - _Blend: 0
     - _BlendMode: 0
     - _BlendModePreserveSpecular: 1
-    - _BumpScale: 1
+    - _BumpScale: 0.335
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ConservativeDepthOffsetEnable: 0
     - _Cull: 0
     - _CullMode: 0
     - _CullModeForward: 2
-    - _Cutoff: 0.073
+    - _Cutoff: 0.014
     - _DepthOffsetEnable: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -164,16 +196,18 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnvironmentReflections: 1
     - _ExcludeFromTUAndAA: 0
+    - _Fresnel: 0.54
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _LightmapUV: 0
-    - _Metallic: 0
+    - _Metallic: 0.051
     - _NormalMapToggle: 1
     - _NormalScale: 1
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _Parallax: 0.005
+    - _PrimaryShift: 0.49
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -182,9 +216,10 @@ Material:
     - _RenderQueueType: 3
     - _RequireSplitLighting: 0
     - _Roughness: 0.2
+    - _SecondaryShift: 0.72
     - _SecondarySpecular: 1
     - _SecondarySpecularShift: 0.9
-    - _Smoothness: 0.5
+    - _Smoothness: 0.16
     - _SmoothnessMax: 0.7
     - _SmoothnessMin: 0.04
     - _SmoothnessTextureChannel: 0
@@ -201,6 +236,7 @@ Material:
     - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskMV: 43
+    - _Subsurface: 0.2
     - _SupportDecals: 1
     - _Surface: 0
     - _SurfaceType: 1
@@ -212,17 +248,21 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 1
     - _TransparentZWrite: 0
+    - _UseHashing: 0
     - _UseShadowThreshold: 1
     - _WorkflowMode: 1
+    - _ZTest: 4
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+    - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Main_Color: {r: 0.2776279, g: 0.11337093, b: 0.11337093, a: 1}
+    - _SpecColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
     - _SpecularColor: {r: 0.33692718, g: 0.19511159, b: 0.044953886, a: 1}
     - _TransmissionColor: {r: 0.88679236, g: 0.7674547, b: 0.55334884, a: 1}
     - _uvBaseST: {r: 1, g: 1, b: 0, a: 0}

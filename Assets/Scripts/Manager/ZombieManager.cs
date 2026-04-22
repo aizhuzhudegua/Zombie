@@ -18,7 +18,7 @@ public class ZombieManager : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(CheckZombie());
+        // StartCoroutine(CheckZombie());
     }
 
     

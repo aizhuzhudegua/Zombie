@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CameraWalk : MonoBehaviour
 {
-    [Header("Camera movement speed")]
+    [Header("카메라 이동속도")]
     public float moveSpeed = 10.0f;
-    [Header("Camera rotation sensitivity (mouse)")]
+    [Header("카메라 회전 감도(마우스)")]
     public float rotateSpeed = 500.0f;
-    [Header("Camera zoom speed")]
+    [Header("카메라 줌 속도")]
     public float zoomSpeed = 10.0f;
-    [Header("Camera zoom minimum/maximum values")]
+    [Header("카메라 줌 최소/최댓값")]
     public float minFov = 15.0f;
     public float maxFov = 90.0f;
 
@@ -27,7 +27,7 @@ public class CameraWalk : MonoBehaviour
     }
     protected virtual void myCameraWalk()
     {
-        // Move the camera with WASD
+        // WASD로 카메라 이동
         float horizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         float vertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
         transform.Translate(horizontal, 0, vertical);
@@ -39,13 +39,13 @@ public class CameraWalk : MonoBehaviour
         {
             transform.Translate(0, moveSpeed * Time.deltaTime, 0);
         }
-        // Zoom in/out with the mouse wheel
+        // 마우스 휠로 확대/축소
         float fov = GetComponent<Camera>().fieldOfView;
         fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         fov = Mathf.Clamp(fov, minFov, maxFov);
         GetComponent<Camera>().fieldOfView = fov;
 
-        // Show/hide the mouse cursor with the right mouse button
+        // 오른쪽 마우스로 마우스 커서 표시/숨기기
         VisibleMouse();
 
         // 

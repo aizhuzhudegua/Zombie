@@ -1,13 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZombieController : HealthObject
+
+[Serializable]
+public class Part
+{
+    public Transform y1;
+    public Transform y2;
+    public float weight;
+}
+
+
+public class ZombieController : HealthObject, IBulletTarget
 {
     const float dis = 10f;
 
     public INavigation navigation;
-    public StateMachine<ZombieController> stateMachine { get; private set; }
+    public ZombieStateMachine stateMachine { get; private set; }
 
     public AudioSource audioSource;
     // public Animator animator;
@@ -20,8 +31,43 @@ public class ZombieController : HealthObject
     public AudioClip[] IdelAudioClips;
     public AudioClip[] HurtAudioClips;
     public AudioClip[] AttackAudioClips;
+    public Part[] Parts;
 
     public Character attackTarget;
+    private GPUAnimController gpuAnimator;
+    public GPUAnimController GpuAnimator {
+        get
+        {
+            if(gpuAnimator == null)
+                gpuAnimator = GetComponentInChildren<GPUAnimController>();
+            return gpuAnimator;
+        }
+    }
+
+    
+
+    private void Awake()
+    {
+       
+    }
+
+    private void OnEnable()
+    {
+        
+        GpuAnimator.OnAnimationEnd += ExecuteAnimationEnd;
+    }
+
+    private void OnDisable()
+    {
+        GpuAnimator.OnAnimationEnd -= ExecuteAnimationEnd;
+    }
+
+
+    private void OnDestroy()
+    {
+        GpuAnimator.OnAnimationEnd -= ExecuteAnimationEnd;
+    }
+
 
     void Start()
     {
@@ -30,16 +76,20 @@ public class ZombieController : HealthObject
         navigation = GetComponent<INavigation>();
         // weapon.Init(this);
 
-        stateMachine = new StateMachine<ZombieController>(this);
+        stateMachine = new ZombieStateMachine(this);
         stateMachine.RegisterState<ZombieIdleState>(new ZombieIdleState(stateMachine));
-        stateMachine.RegisterState<ZombieWalkState>(new ZombieWalkState(stateMachine));
         stateMachine.RegisterState<ZombieRunState>(new ZombieRunState(stateMachine));
         stateMachine.RegisterState<ZombieAttackState>(new ZombieAttackState(stateMachine));
-        stateMachine.RegisterState<ZombieHurtState>(new ZombieHurtState(stateMachine));
         stateMachine.RegisterState<ZombieDeadState>(new ZombieDeadState(stateMachine));
+        stateMachine.RegisterState<ZombieHurtState>(new ZombieHurtState(stateMachine));
 
         Init();
 
+    }
+
+    public void ExecuteAnimationEnd(string name) 
+    {
+        stateMachine.OnAnimationEnd(name);
     }
 
     public void Init()
@@ -92,11 +142,26 @@ public class ZombieController : HealthObject
         }
     }
 
-    public override void Hurt(int value)
+
+    public void OnBulletHit(int damage, Vector3 hitPoint)
+    {
+        foreach (var item in Parts)
+        {
+            if(hitPoint.y > item.y2.position.y && hitPoint.y <= item.y1.position.y)
+            {
+                Hurt((int)(damage * item.weight));
+                return;
+            }
+        }
+       
+    }
+
+    public void Hurt(int value)
     {
         CurrentHealth -= (int)Mathf.Round(value);
         if (CurrentHealth <= 0)
         {
+            
             stateMachine.ChangeState<ZombieDeadState>();
         }
         else
@@ -105,55 +170,62 @@ public class ZombieController : HealthObject
         }
     }
 
+    public void Die()
+    {
+        ZombieManager.Instance.ZombieDead(this);
+    }
+
     void Destroy()
     {
         ZombieManager.Instance.ZombieDead(this);
     }
 
-// #if UNITY_EDITOR
-//     void OnDrawGizmos()
-//     {
-//         Gizmos.color = Color.red;
-//         Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle / 2, 0) * transform.forward;
-//         Vector3 rightBoundary = Quaternion.Euler(0, viewAngle / 2, 0) * transform.forward;
+    // #if UNITY_EDITOR
+    //     void OnDrawGizmos()
+    //     {
+    //         Gizmos.color = Color.red;
+    //         Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle / 2, 0) * transform.forward;
+    //         Vector3 rightBoundary = Quaternion.Euler(0, viewAngle / 2, 0) * transform.forward;
 
-//         Gizmos.DrawLine(transform.position, transform.position + leftBoundary * 10f);
-//         Gizmos.DrawLine(transform.position, transform.position + rightBoundary * 10f);
+    //         Gizmos.DrawLine(transform.position, transform.position + leftBoundary * 10f);
+    //         Gizmos.DrawLine(transform.position, transform.position + rightBoundary * 10f);
 
-//         int segments = 20;
-//         float angleStep = viewAngle / segments;
-//         Vector3 previousPoint = transform.position + leftBoundary * 10f;
+    //         int segments = 20;
+    //         float angleStep = viewAngle / segments;
+    //         Vector3 previousPoint = transform.position + leftBoundary * 10f;
 
-//         for (int i = 1; i <= segments; i++)
-//         {
-//             float angle = -viewAngle / 2 + angleStep * i;
-//             Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
-//             Vector3 currentPoint = transform.position + direction * 10f;
-//             Gizmos.DrawLine(previousPoint, currentPoint);
-//             previousPoint = currentPoint;
-//         }
-//     }
-// #endif
+    //         for (int i = 1; i <= segments; i++)
+    //         {
+    //             float angle = -viewAngle / 2 + angleStep * i;
+    //             Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+    //             Vector3 currentPoint = transform.position + direction * 10f;
+    //             Gizmos.DrawLine(previousPoint, currentPoint);
+    //             previousPoint = currentPoint;
+    //         }
+    //     }
+    // #endif
+
+
 
     #region 动画事件
     void IdelAudio()
     {
-        if (Random.Range(0, 4) == 1)
+        if (UnityEngine.Random.Range(0, 4) == 1)
         {
-            audioSource.PlayOneShot(IdelAudioClips[Random.Range(0, IdelAudioClips.Length)]);
+            audioSource.PlayOneShot(IdelAudioClips[UnityEngine.Random.Range(0, IdelAudioClips.Length)]);
         }
     }
     void FootStep()
     {
-        audioSource.PlayOneShot(FootstepAudioClips[Random.Range(0, IdelAudioClips.Length)]);
+        audioSource.PlayOneShot(FootstepAudioClips[UnityEngine.Random.Range(0, IdelAudioClips.Length)]);
     }
     private void HurtAudio()
     {
-        audioSource.PlayOneShot(HurtAudioClips[Random.Range(0, HurtAudioClips.Length)]);
+        audioSource.PlayOneShot(HurtAudioClips[UnityEngine.Random.Range(0, HurtAudioClips.Length)]);
     }
     private void AttackAudio()
     {
-        audioSource.PlayOneShot(AttackAudioClips[Random.Range(0, AttackAudioClips.Length)]);
+        audioSource.PlayOneShot(AttackAudioClips[UnityEngine.Random.Range(0, AttackAudioClips.Length)]);
     }
     public void StartAttack()
     {
@@ -163,5 +235,6 @@ public class ZombieController : HealthObject
     {
         weapon.EndAttack();
     }
+
     #endregion
 }

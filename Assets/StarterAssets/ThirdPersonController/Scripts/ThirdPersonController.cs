@@ -73,28 +73,26 @@ namespace StarterAssets
 		private Animator _animator;
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
-		private GameObject _mainCamera;
+		public GameObject MainCamera;
         private bool _rotateOnMove = true;
 
 		private const float _threshold = 0.01f;
-
-		private bool _hasAnimator;
 
 		private ThirdPersonShooterController shooterController;
 
 		private void Awake()
 		{
 			// get a reference to our main camera
-			if (_mainCamera == null)
+			if (MainCamera == null)
 			{
-				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+				MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
 			shooterController = GetComponent<ThirdPersonShooterController>();
+			_animator = GetComponent<Animator>();
 		}
 
 		private void Start()
 		{
-			_hasAnimator = TryGetComponent(out _animator);
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
 
@@ -102,7 +100,6 @@ namespace StarterAssets
 
 		private void Update()
 		{
-			_hasAnimator = TryGetComponent(out _animator);
 			CheckGround();
 			Move();
 		}
@@ -135,6 +132,9 @@ namespace StarterAssets
 			CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
 		}
 
+
+		private float InputX = 0;
+		private float InputY = 0;
 		private void Move()
 		{
 			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
@@ -143,9 +143,10 @@ namespace StarterAssets
 			// if there is a move input rotate player when the player is moving
 			if (_input.move != Vector2.zero)
 			{
+				
 				shooterController.noise.m_FrequencyGain = Mathf.Lerp(shooterController.noise.m_FrequencyGain, 5f, Time.deltaTime * 2f);  // 镜头晃动
 				_animator.SetBool("IsMove", true);
-				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + MainCamera.transform.eulerAngles.y;
 				float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
@@ -156,9 +157,25 @@ namespace StarterAssets
 			}
 			else
             {
+		
+
 				shooterController.noise.m_FrequencyGain = Mathf.Lerp(shooterController.noise.m_FrequencyGain, 0.5f, Time.deltaTime * 2f);
 				_animator.SetBool("IsMove", false);
 			}
+
+			// 平滑阻尼（不会震荡！）
+			float smoothSpeed = 5f; // 调大更快，调小更柔
+
+			InputX = Mathf.MoveTowards(InputX, _input.move.x, Time.deltaTime * smoothSpeed);
+			InputY = Mathf.MoveTowards(InputY, _input.move.y, Time.deltaTime * smoothSpeed);
+
+			// 特别接近时直接等于目标，彻底消除抖动
+			if (Mathf.Abs(InputX - _input.move.x) < 0.01f) InputX = _input.move.x;
+			if (Mathf.Abs(InputY - _input.move.y) < 0.01f) InputY = _input.move.y;
+			// ======================================================
+
+			_animator.SetFloat("InputX", InputX);
+			_animator.SetFloat("InputY", InputY);
 
 		}
 

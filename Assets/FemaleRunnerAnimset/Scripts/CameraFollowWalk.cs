@@ -8,7 +8,7 @@ public class CameraFollowWalk : CameraWalk
     private Transform _parent;
     private Vector3 initialLocalPosition;
 
-    [Header("Rotate the camera to follow the character")]
+    [Header("카메라가 캐릭터 따라 회전하기")]
     public bool isRotate = false;
     protected override void Start()
     {
@@ -30,7 +30,7 @@ public class CameraFollowWalk : CameraWalk
     }
     protected override void myCameraWalk()
     {
-        // Move the camera with WASD
+        // WASD로 카메라 이동
         float horizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         float vertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
         Vector3 prePos = transform.position;
@@ -49,13 +49,13 @@ public class CameraFollowWalk : CameraWalk
             transform.Translate(0, moveSpeed * Time.deltaTime, 0, Space.Self);
             initialLocalPosition += transform.position - prePos;
         }
-        // Zoom in/out with the mouse wheel
+        // 마우스 휠로 확대/축소
         float fov = GetComponent<Camera>().fieldOfView;
         fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         fov = Mathf.Clamp(fov, minFov, maxFov);
         GetComponent<Camera>().fieldOfView = fov;
 
-        // Show/hide the mouse cursor with the right mouse button
+        // 오른쪽 마우스로 마우스 커서 표시/숨기기
         VisibleMouse();
 
         // 
