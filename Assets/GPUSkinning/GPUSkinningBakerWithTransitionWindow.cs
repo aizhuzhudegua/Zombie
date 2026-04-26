@@ -98,7 +98,7 @@ public class GPUSkinningTransitionWindow : OdinEditorWindow
         AssetDatabase.CreateAsset(tex, $"{path}/{gameObject.name}_BoneTex.asset");
         EditorUtility.SetDirty(animationConfig);
         AssetDatabase.SaveAssets();
-        Debug.Log("✅ 骨骼矩阵烘焙完成！仅烘焙动画本体");
+        Debug.Log("骨骼矩阵烘焙完成！仅烘焙动画本体");
         yield return null;
     }
 

@@ -48,10 +48,10 @@ class LeftHandIK:IKObj<TwoBoneIKConstraint>
             );
 
             IKTarget.rotation = Quaternion.Lerp(
-             IKTarget.rotation,
-             IKFollow.rotation,
-             Time.deltaTime * smoothSpeed
-         );
+                 IKTarget.rotation,
+                 IKFollow.rotation,
+                 Time.deltaTime * smoothSpeed
+            );
 
         }
     }
@@ -92,6 +92,74 @@ class Aim : IKObj<MultiAimConstraint>
     }
 }
 
+[Serializable]
+class RightHand : IKObj<TwoBoneIKConstraint>
+{
+    // 序列化参数，Unity编辑器可调
+    [Header("淡入时间(0→1)")]
+    public float fadeInTime = 0.1f;
+    [Header("淡出时间(1→0)")]
+    public float fadeOutTime = 0.5f;
+
+    // 动画状态
+    private enum AnimState { Idle, FadeIn, FadeOut }
+    private AnimState _currentState = AnimState.Idle;
+    private float _timer = 0f;
+
+    /// <summary>
+    /// 调用后播放：0→1→0 的权重动画
+    /// 多次调用会重新触发动画
+    /// </summary>
+    public void Shot()
+    {
+        // 重置状态，重新开始淡入
+        _currentState = AnimState.FadeIn;
+        _timer = 0f;
+    }
+
+    public override void Update()
+    {
+        // 约束为空直接返回
+        if (constraint == null) return;
+
+        switch (_currentState)
+        {
+            case AnimState.Idle:
+                // 闲置状态保持权重为0
+                constraint.weight = 0;
+                break;
+
+            case AnimState.FadeIn:
+                // 淡入：0 → 1
+                _timer += Time.deltaTime;
+                // 平滑插值
+                constraint.weight = Mathf.Lerp(0, 0.5f, _timer / fadeInTime);
+
+                // 淡入完成，切换淡出
+                if (_timer >= fadeInTime)
+                {
+                    _timer = 0f;
+                    _currentState = AnimState.FadeOut;
+                }
+                break;
+
+            case AnimState.FadeOut:
+                // 淡出：1 → 0
+                _timer += Time.deltaTime;
+                // 平滑插值
+                constraint.weight = Mathf.Lerp(0.5f, 0, _timer / fadeOutTime);
+
+                // 淡出完成，切换闲置
+                if (_timer >= fadeOutTime)
+                {
+                    _currentState = AnimState.Idle;
+                    constraint.weight = 0;
+                }
+                break;
+        }
+    }
+}
+
 public enum ShootSystemState
 {
     Idle,
@@ -111,6 +179,9 @@ public class ShootSystemIKManager : MonoBehaviour
     [Header("Aim IK Settings")]
     [SerializeField] private Aim AimIK;
 
+    [Header("Shot Settings")]
+    [SerializeField] private RightHand rightHandIK;
+
     public ShootSystemState curState = ShootSystemState.Idle;
 
     public bool Locked = false;
@@ -120,6 +191,7 @@ public class ShootSystemIKManager : MonoBehaviour
         leftHandIK.SetOwner(this);
         BodyIK.SetOwner(this);
         AimIK.SetOwner(this);
+        rightHandIK.SetOwner(this);
     }
 
     public void Aim(Vector3 LookDir)
@@ -162,6 +234,12 @@ public class ShootSystemIKManager : MonoBehaviour
         leftHandIK.Update();
         BodyIK.Update();
         AimIK.Update();
+        rightHandIK.Update();
+    }
+
+    public void Shot()
+    {
+        rightHandIK.Shot();
     }
     
     private void OnDrawGizmos()

@@ -44,6 +44,9 @@
         },
         {
             "m_Id": "55dbd8e5b50f45858b5b573382fffec3"
+        },
+        {
+            "m_Id": "cb9afaa3d89b43dfafa1b8ffa397f29b"
         }
     ],
     "m_Keywords": [],
@@ -209,6 +212,9 @@
         },
         {
             "m_Id": "9c5a1bbec0bd4bfdab5b4be716b81bf6"
+        },
+        {
+            "m_Id": "729f240ab112492ba2c63e6f31d557d7"
         }
     ],
     "m_GroupDatas": [
@@ -561,6 +567,20 @@
                     "m_Id": "edd9812a7b1b412ca71553d319d0ca5e"
                 },
                 "m_SlotId": 2
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "729f240ab112492ba2c63e6f31d557d7"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "6bc992bed6094fc58861c70924d0fda1"
+                },
+                "m_SlotId": 0
             }
         },
         {
@@ -1057,7 +1077,7 @@
     "m_ObjectId": "07e400b664484c71af9d9aaf39fb1a21",
     "m_Title": "散射",
     "m_Position": {
-        "x": -222.857177734375,
+        "x": -222.8570556640625,
         "y": -1052.571533203125
     }
 }
@@ -1133,6 +1153,31 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "0bf18857b20a46fdb7dc9fd9c27aeb00",
+    "m_Id": 0,
+    "m_DisplayName": "Emission",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -1443,8 +1488,8 @@
     "m_ObjectId": "1728aab9a05c402d961d8fe1e7db2662",
     "m_Title": "BaseColor",
     "m_Position": {
-        "x": 616.5716552734375,
-        "y": 704.0000610351563
+        "x": 616.5714111328125,
+        "y": 703.9999389648438
     }
 }
 
@@ -2127,8 +2172,8 @@
     "m_ObjectId": "3675e5ed7acd4bc5b8d424bd4f9dde6c",
     "m_Title": "透射",
     "m_Position": {
-        "x": -1601.1429443359375,
-        "y": 261.14276123046877
+        "x": -1601.142822265625,
+        "y": 261.14288330078127
     }
 }
 
@@ -2226,7 +2271,7 @@
     "m_ObjectId": "3c4f8d51bec34200b2ee92c56bf611bf",
     "m_Title": "Get Main Light From Scene",
     "m_Position": {
-        "x": -1559.4285888671875,
+        "x": -1559.428466796875,
         "y": -312.0
     }
 }
@@ -2598,6 +2643,9 @@
         },
         {
             "m_Id": "55dbd8e5b50f45858b5b573382fffec3"
+        },
+        {
+            "m_Id": "cb9afaa3d89b43dfafa1b8ffa397f29b"
         }
     ]
 }
@@ -3554,6 +3602,42 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "729f240ab112492ba2c63e6f31d557d7",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 2165.877197265625,
+            "y": 278.85858154296877,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "0bf18857b20a46fdb7dc9fd9c27aeb00"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "cb9afaa3d89b43dfafa1b8ffa397f29b"
+    }
 }
 
 {
@@ -5590,6 +5674,36 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 3,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
+    "m_ObjectId": "cb9afaa3d89b43dfafa1b8ffa397f29b",
+    "m_Guid": {
+        "m_GuidSerialized": "4973e3eb-bb5f-4e95-833a-f6615acfb9eb"
+    },
+    "m_Name": "Emission",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Emission",
+    "m_DefaultReferenceName": "_Emission",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+    },
+    "isMainColor": false,
+    "m_ColorMode": 1
 }
 
 {

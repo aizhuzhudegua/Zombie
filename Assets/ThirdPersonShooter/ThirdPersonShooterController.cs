@@ -17,6 +17,7 @@ public class ThirdPersonShooterController : MonoBehaviour {
     [SerializeField] private Transform vfxHitRed;
     [SerializeField] private PlayerGunSelector GunSelector;
     [SerializeField] private ShootSystemIKManager shootSystemIKManager;
+    [SerializeField] private CinemachineImpulseSource source;
     // 旋转动画参数平滑缓存
     private float _currentRotation;
     private float _rotSmoothVel; // 平滑阻尼专用
@@ -94,6 +95,8 @@ public class ThirdPersonShooterController : MonoBehaviour {
 
             if (starterAssetsInputs.shoot)
             {
+                source.GenerateImpulse(0.05f);
+                shootSystemIKManager.Shot();
                 // 射线从相机发射，加入spread
                 Ray aimRay = ray;
                 aimRay.direction += new Vector3(
